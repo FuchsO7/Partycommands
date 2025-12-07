@@ -3,7 +3,7 @@ import time
 import re
 import random
 
-def getcommand(command, player, dream):
+def getcommand(command, player):
 	commands = {
 		"!warp":"/party warp",
 		"!allinv":"/party settings allinvite true",
@@ -33,12 +33,18 @@ def getcommand(command, player, dream):
 		"!b4x3":"/play bedwars_four_three",
 		"!b2x4":"/play bedwars_two_four",
 		"!b4v4":"/play bedwars_two_four",
-		"!b8x2d":f"/play bedwars_eight_two_{dream}",
-		"!b4x4d":f"/play bedwars_four_four_{dream}",
+		"!b8x2d":f"/play bedwars_eight_two_{getdream()}",
+		"!b4x4d":f"/play bedwars_four_four_{getdream()}",
 	}
 	return commands.get(command)
 
-def CheckIfInSkyblock(command):
+def getdream():
+	dreams = ["swap","oneblock","rush","ultimate","castles","voidless","armed","lucky"]
+	SecondsForDreamRotation = 82800
+	WeekInSeconds = 604800
+	return dreams[int(((time.time() - SecondsForDreamRotation) % (len(dreams) * WeekInSeconds)) // WeekInSeconds)]
+
+def CheckIfInSkyblock():
 	eq2 = minescript.EventQueue()
 	eq2.register_chat_listener()
 	minescript.execute("/locraw")
@@ -54,11 +60,8 @@ def CheckIfInSkyblock(command):
 		eq2.unregister_all()
 
 def party():
-	SecondsForDreamRotation = 82800
-	WeekInSeconds = 604800
 	CheckBedwarsCommands = False
-	dreams = ["swap","oneblock","rush","ultimate","castles","voidless","armed","lucky"]
-
+	
 	eq = minescript.EventQueue()
 	eq.register_chat_listener()
 	minescript.echo("Party Commands enabled!")
@@ -72,11 +75,10 @@ def party():
 			msgs = msg.split(" ")
 			for i in range(1,len(msgs),1):
 				if msgs[i].__contains__("!"):
-					dream = dreams[int(((time.time() - SecondsForDreamRotation) % (len(dreams) * WeekInSeconds)) // WeekInSeconds)]
 					player = msgs[i-1][:-1]
-					command = getcommand(msgs[i], player, dream)
+					command = getcommand(msgs[i], player)
 					if command:					
-						if CheckBedwarsCommands and command.startswith("/play bedwars") and CheckIfInSkyblock(command):
+						if CheckBedwarsCommands and command.startswith("/play bedwars") and CheckIfInSkyblock():
 							command = None
 					if command:
 						time.sleep(0.5)
