@@ -40,19 +40,18 @@ def getcommand(command, player, dream):
 
 def CheckIfInSkyblock(command):
 	eq2 = minescript.EventQueue()
-	if command.startswith("/play bedwars"):
-		eq2.register_chat_listener()
-		minescript.execute("/locraw")
-		msg = eq2.get().message
-		try:
-			location = eval(msg).get("gametype")
-			if location == "SKYBLOCK":
-				minescript.execute("/pc Play Bedwars Command not allowed while playing Skyblock")
-				return True
-		except:
-			minescript.echo(f"Error at parsing location: {msg}")
-		finally:
-			eq2.unregister_all()
+	eq2.register_chat_listener()
+	minescript.execute("/locraw")
+	msg = eq2.get().message
+	try:
+		location = eval(msg).get("gametype")
+		if location == "SKYBLOCK":
+			minescript.execute("/pc Play Command not allowed while playing Skyblock")
+			return True
+	except:
+		minescript.echo(f"Error at parsing location: {msg}")
+	finally:
+		eq2.unregister_all()
 
 def party():
 	SecondsForDreamRotation = 82800
@@ -75,9 +74,10 @@ def party():
 				if msgs[i].__contains__("!"):
 					dream = dreams[int(((time.time() - SecondsForDreamRotation) % (len(dreams) * WeekInSeconds)) // WeekInSeconds)]
 					player = msgs[i-1][:-1]
-					command = getcommand(msgs[i], player, dream)					
-					if CheckBedwarsCommands and command and CheckIfInSkyblock(command):
-						command = None
+					command = getcommand(msgs[i], player, dream)
+					if command:					
+						if CheckBedwarsCommands and command.startswith("/play bedwars") and CheckIfInSkyblock(command):
+							command = None
 					if command:
 						time.sleep(0.5)
 						minescript.execute(command)
