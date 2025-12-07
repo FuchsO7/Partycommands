@@ -15,7 +15,7 @@ Like other popular mods for Hypixel, this script allows other players in your pa
 - `!m5` Join a master catacombs dungeon run in Skyblock, here Master Floor 5 as example
 - `!t4` Join a kuudra run in Skyblock, here Fiery tier as example
 - `!b4x4` Join a bedwars game on Hypixel, here 4v4v4v4 as example
-- `!b2x8d` Join a dream bedwars game on Hypixel, here duos as example (Castles and OneBlock don't work currently)
+- `!b8x2d` Join a dream bedwars game on Hypixel, here duos as example (Castles and OneBlock don't work currently)
 
 The dungeon and kuudra play commands use `!{type}{tier}` as syntax, the bedwars play commands `!b{number of teams}x{team size}` as syntax.
 
