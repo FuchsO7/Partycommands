@@ -78,7 +78,7 @@ def party():
 					player = msgs[i-1][:-1]
 					command = getcommand(msgs[i], player)
 					if command:					
-						if CheckBedwarsCommands and command.startswith("/play bedwars") and CheckIfInSkyblock():
+						if CheckBedwarsCommands and command.startswith("/play bedwars") and not CheckIfInSkyblock():
 							command = None
 					if command:
 						time.sleep(0.5)
